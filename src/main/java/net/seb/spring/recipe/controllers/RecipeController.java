@@ -1,10 +1,12 @@
 package net.seb.spring.recipe.controllers;
 
+import net.seb.spring.recipe.commands.RecipeCommand;
 import net.seb.spring.recipe.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
 
 @Controller
 public class RecipeController {
@@ -18,5 +20,20 @@ public class RecipeController {
     public String showById(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
         return "recipe/show";
+    }
+
+    @RequestMapping("recipe/new")
+    public String newRecipe(Model model) {
+        model.addAttribute("recipe", new RecipeCommand());
+        return "recipe/recipeform";
+    }
+
+    @PostMapping
+    @RequestMapping("recipe")
+    //@RequestMapping(name = "recipe", method = RequestMethod.POST)
+    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+
+        return "redirect:/recipe/show/" + savedCommand.getId();
     }
 }
