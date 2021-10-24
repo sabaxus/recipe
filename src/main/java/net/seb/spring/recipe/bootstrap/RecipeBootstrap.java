@@ -1,5 +1,6 @@
 package net.seb.spring.recipe.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import net.seb.spring.recipe.domain.*;
 import net.seb.spring.recipe.repositories.CategoryRepository;
 import net.seb.spring.recipe.repositories.RecipeRepository;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -28,6 +30,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.debug("Loading Bootstrap Data.");
         recipeRepository.saveAll(getRecipes());
     }
 
@@ -155,6 +158,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacamoleRecipe.getCategories().add(americanCategory);
         guacamoleRecipe.getCategories().add(mexicanCategory);
 
+        guacamoleRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
+        guacamoleRecipe.setServings(4);
+        guacamoleRecipe.setSource("Simply Recipes");
+
         // add to return list
         recipes.add(guacamoleRecipe);
 
@@ -215,6 +222,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.getCategories().add(americanCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
+
+        tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
+        tacosRecipe.setServings(4);
+        tacosRecipe.setSource("Simply Recipes");
 
         recipes.add(tacosRecipe);
 

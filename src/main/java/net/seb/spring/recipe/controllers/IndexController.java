@@ -1,5 +1,6 @@
 package net.seb.spring.recipe.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import net.seb.spring.recipe.domain.Category;
 import net.seb.spring.recipe.domain.UnitOfMeasure;
 import net.seb.spring.recipe.repositories.CategoryRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -38,6 +40,8 @@ public class IndexController {
 //
 //        System.out.println("Category Id is: " + categoryOptional.get().getId());
 //        System.out.println("Unit of Measure is: " + unitOfMeasureOptional.get().getId());
+
+        log.debug("Getting Index page");
 
         model.addAttribute("recipes", recipeService.getRecipes());
 
