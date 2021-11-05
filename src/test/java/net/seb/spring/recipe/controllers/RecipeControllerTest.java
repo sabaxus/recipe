@@ -2,6 +2,7 @@ package net.seb.spring.recipe.controllers;
 
 import net.seb.spring.recipe.commands.RecipeCommand;
 import net.seb.spring.recipe.domain.Recipe;
+import net.seb.spring.recipe.exceptions.NotFoundException;
 import net.seb.spring.recipe.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +49,18 @@ public class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        Recipe recipe = new Recipe();
+        recipe.setId(1l);
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

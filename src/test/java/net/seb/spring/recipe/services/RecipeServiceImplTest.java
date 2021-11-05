@@ -4,6 +4,7 @@ import net.seb.spring.recipe.commands.RecipeCommand;
 import net.seb.spring.recipe.converters.RecipeCommandToRecipe;
 import net.seb.spring.recipe.converters.RecipeToRecipeCommand;
 import net.seb.spring.recipe.domain.Recipe;
+import net.seb.spring.recipe.exceptions.NotFoundException;
 import net.seb.spring.recipe.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +50,19 @@ public class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1l);
+
+        // should go boom
+
     }
 
     @Test
